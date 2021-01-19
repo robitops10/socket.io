@@ -1,17 +1,28 @@
 const express = require('express');
 const path = require('path');
-
-const app = express();
-const publicPath = path.resolve( __dirname, '../public');
+const socketIO = require('socket.io');
+const http = require('http');
 
 const port = process.env.PORT || 3000;
+const publicPath = path.resolve( __dirname, '../public');
 
-app.use( express.static(publicPath) );
+const app = express();
+const server = http.createServer( app );
+const io = socketIO( server ); 												// This io function will be accessable  by client's js.
 
+io.on('connection', (socket) => {
+	console.log('New User Connected');
 
-app.get('/', (req, res ) => {
-	console.log(  express.static(path.resolve( '../public')) 	)
-	res.status(200).send('Hello Server');
+	socket.on('disconnect', () => {
+		console.log('Close User Connected');
+	});
+
 });
 
-app.listen( port, () => console.log( `Server is running on port ${port}`) );
+
+
+
+
+
+app.use( express.static(publicPath) );
+server.listen( port, () => console.log( `Server is running on port ${port}`) );

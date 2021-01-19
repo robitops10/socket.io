@@ -1,2 +1,9 @@
-const currentTime = new Date().toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'});
-console.log( currentTime );
+const socket = io(); 										// accessable via server side 	[ const io = socketIO( server ) 	]
+
+socket.on('connect', () => {
+	console.log('Client Connected');
+});
+
+socket.on('disconnect', () => {
+	console.log('Server Disconnected');
+});
